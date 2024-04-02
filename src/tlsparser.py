@@ -66,6 +66,9 @@ def getTLSObjectList(pkt):
             shobj.parseSHello(pkt)
             returnlist.append(shobj)
         elif t == 11:
+	    if not hasattr(pkt.tls, 'x509af_algorithm_id'):
+                returnlist = []
+                break
             certobj = Certificate()
             certobj.parseCertificate(pkt)
             returnlist.append(certobj)
