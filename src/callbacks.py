@@ -156,7 +156,7 @@ def get_callbacks(app):
                     x = ["CHello", "SHello", "Handshake Signature", "Certificates"]
                     y = [hs.chello.size, hs.serverdata.size,
                          hs.certificateverify.signatureLength,
-                         hs.certificatedata.certsLength]
+                         hs.certificatedata.certsLength if hs.certificatedata is not None else hs.encrypted.size]
                     fig1.update_layout(title=dict(
                         text='<b>TLS Message Sizes</b>',
                         x=0.5,

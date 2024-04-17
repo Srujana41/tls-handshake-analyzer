@@ -8,6 +8,7 @@ from tlsobj.serverdata import Serverdata
 from tlsobj.certificate import Certificate
 from tlsobj.certificateverify import Certificateverify
 from tlsobj.finished import Finished
+from tlsobj.encrypted import Encrypted
 
 # used for Finished packets
 
@@ -41,6 +42,10 @@ def readCaptureFile(filename, tlskeyfilename):
     sfinished = True
     hspackets = 0
     print("Start full parsing (pcap + keylog)...")
+    lll = []
+    for i in cap:
+        lll.append(i)
+
     for pkt in cap:
 
         if tlspar.skipUnrelatedTLSPackets(pkt):
@@ -68,6 +73,8 @@ def readCaptureFile(filename, tlskeyfilename):
                         setattr(hs, "hstime", time * 1000)  # ms
                 elif matchSource(ob, hs.chello):
                     setattr(hs, "cfinished", ob)
+            elif isinstance(ob, Encrypted):
+                setattr(hs, "encrypted", ob)
 
         if (hs.hasKEXandAuthData()):
             hs.setSize()
